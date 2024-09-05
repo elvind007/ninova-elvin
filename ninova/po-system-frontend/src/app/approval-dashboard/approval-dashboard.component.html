@@ -1,0 +1,8 @@
+<div *ngFor="let approval of approvals">
+  <p>Approval Level: {{ approval.level }}</p>
+  <p>Approver ID: {{ approval.approver.id }}</p>
+  <p>Status: {{ approval.status }}</p>
+
+  <button (click)="approve(approval.id)">Approve</button>
+  <button (click)="reject(approval.id)">Reject</button>
+</div>

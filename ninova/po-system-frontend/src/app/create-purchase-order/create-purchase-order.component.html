@@ -1,0 +1,20 @@
+<form [formGroup]="poForm" (ngSubmit)="onSubmit()">
+  <label for="totalAmount">Total Amount</label>
+  <input formControlName="totalAmount" type="number" />
+
+  <div formArrayName="workflows">
+    <div
+      *ngFor="let workflow of workflows.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <label for="level">Approval Level</label>
+      <input formControlName="level" type="number" />
+
+      <label for="approverId">Approver ID</label>
+      <input formControlName="approverId" type="number" />
+    </div>
+  </div>
+
+  <button type="button" (click)="addWorkflow()">Add Workflow</button>
+  <button type="submit">Create Purchase Order</button>
+</form>
