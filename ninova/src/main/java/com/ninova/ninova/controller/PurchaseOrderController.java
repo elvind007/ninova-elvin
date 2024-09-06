@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ninova.ninova.dto.ApprovalRequest;
 import com.ninova.ninova.dto.PurchaseOrderDto;
 import com.ninova.ninova.entity.ApprovalWorkflow;
+import com.ninova.ninova.entity.Material;
 import com.ninova.ninova.entity.PurchaseOrder;
 import com.ninova.ninova.service.PurchaseOrderService;
+import com.ninova.ninova.repository.*;
 
 @RestController
 @RequestMapping("/api/po")
@@ -29,11 +31,14 @@ public class PurchaseOrderController {
     @PostMapping("/create")
     public ResponseEntity<PurchaseOrder> createPO(@RequestBody PurchaseOrderDto poDto) {
         PurchaseOrder po = new PurchaseOrder();
-        po.setTotalAmount(poDto.getTotalAmount()); // Set total amount or other fields
-        po.setUser(poDto.getUser()); // Set the user who created the PO
-        po.setStatus("PENDING"); // Set initial status
-
-        // Create the approval workflows
+        po.setTotalAmount(poDto.getTotalAmount());
+        po.setUser(poDto.getUser());
+        po.setStatus("PENDING");
+    
+        Material material = materialRepository.findById(poDto.getMaterialId())
+            .orElseThrow(() -> new RuntimeException("Material not found"));
+        po.setMaterial(material); // Set material
+    
         List<ApprovalWorkflow> workflows = poDto.getWorkflows().stream()
             .map(wfDto -> {
                 ApprovalWorkflow workflow = new ApprovalWorkflow();
@@ -42,8 +47,7 @@ public class PurchaseOrderController {
                 workflow.setStatus("PENDING");
                 return workflow;
             }).collect(Collectors.toList());
-
-        // Call the service to create the PO with workflows
+    
         PurchaseOrder createdPO = purchaseOrderService.createPO(po, workflows);
         return ResponseEntity.ok(createdPO);
     }
@@ -59,4 +63,6 @@ public class PurchaseOrderController {
         List<ApprovalWorkflow> workflows = purchaseOrderService.getApprovalSteps(poId);
         return ResponseEntity.ok(workflows);
     }
+
+   
 }

@@ -27,5 +27,7 @@ public class PurchaseOrder {
 
     private String status; // e.g., PENDING, APPROVED, REJECTED
 
-    // Other PO details (optional) like date, vendor, etc.
+    @ManyToOne
+@JoinColumn(name = "material_id")
+private Material material;
 }

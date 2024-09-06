@@ -44,5 +44,6 @@
             <column name="approver_id" type="BIGINT"/>
             <column name="status" type="VARCHAR(255)"/>
         </createTable>
-    </changeSet>
+
+            </changeSet>
 </databaseChangeLog>

@@ -8,6 +8,7 @@ import com.ninova.ninova.entity.User;
 
 public class PurchaseOrderDto {
     private BigDecimal totalAmount;
+    private Long materialId; // Add materialId field
     private User user;
     private List<ApprovalWorkflowDto> workflows;
 

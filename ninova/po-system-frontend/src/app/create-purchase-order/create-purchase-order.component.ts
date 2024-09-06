@@ -20,18 +20,23 @@ export class CreatePurchaseOrderComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private http: HttpClient) {}
 
+  materials: any[] = []; // List of materials
+
   ngOnInit() {
+    this.loadMaterials(); // Fetch materials on init
     this.poForm = this.fb.group({
       totalAmount: ['', Validators.required],
       workflows: this.fb.array([this.createWorkflow()]),
+      materialId: ['', Validators.required], // Add material selection
     });
   }
 
-  createWorkflow(): FormGroup {
-    return this.fb.group({
-      level: ['', Validators.required],
-      approverId: ['', Validators.required],
-    });
+  loadMaterials() {
+    this.http
+      .get<any[]>('http://localhost:8080/api/materials')
+      .subscribe((materials: any[]) => {
+        this.materials = materials;
+      });
   }
 
   get workflows(): FormArray {

@@ -1,0 +1,14 @@
+<form (ngSubmit)="addMaterial()">
+  <label for="name">Material Name</label>
+  <input type="text" [(ngModel)]="material.name" name="name" required />
+
+  <label for="unitPrice">Unit Price</label>
+  <input
+    type="number"
+    [(ngModel)]="material.unitPrice"
+    name="unitPrice"
+    required
+  />
+
+  <button type="submit">Add Material</button>
+</form>

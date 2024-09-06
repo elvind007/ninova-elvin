@@ -2,6 +2,13 @@
   <label for="totalAmount">Total Amount</label>
   <input formControlName="totalAmount" type="number" />
 
+  <label for="material">Select Material</label>
+  <select formControlName="materialId">
+    <option *ngFor="let material of materials" [value]="material.id">
+      {{ material.name }} - {{ material.unitPrice }}
+    </option>
+  </select>
+
   <div formArrayName="workflows">
     <div
       *ngFor="let workflow of workflows.controls; let i = index"
