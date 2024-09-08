@@ -25,8 +25,14 @@ import com.ninova.ninova.repository.*;
 @RequestMapping("/api/po")
 public class PurchaseOrderController {
 
-    @Autowired
-    private PurchaseOrderService purchaseOrderService;
+    private final PurchaseOrderService purchaseOrderService;
+    private final MaterialRepository materialRepository;
+
+    public PurchaseOrderController(PurchaseOrderService purchaseOrderService, MaterialRepository materialRepository) {
+        this.purchaseOrderService = purchaseOrderService;
+        this.materialRepository = materialRepository;
+    }
+
 
     @PostMapping("/create")
     public ResponseEntity<PurchaseOrder> createPO(@RequestBody PurchaseOrderDto poDto) {
@@ -34,10 +40,11 @@ public class PurchaseOrderController {
         po.setTotalAmount(poDto.getTotalAmount());
         po.setUser(poDto.getUser());
         po.setStatus("PENDING");
-    
+   
+        
+        // Inside createPO method
         Material material = materialRepository.findById(poDto.getMaterialId())
             .orElseThrow(() -> new RuntimeException("Material not found"));
-        po.setMaterial(material); // Set material
     
         List<ApprovalWorkflow> workflows = poDto.getWorkflows().stream()
             .map(wfDto -> {
